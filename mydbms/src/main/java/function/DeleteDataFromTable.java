@@ -16,6 +16,10 @@ public class DeleteDataFromTable {
         if (IsLegal.isDatabaseEmpty()) {
             return;
         }
+        //输出tmp列表
+        for (int i = 0; i < tmp.size(); i++) {
+            System.out.println(tmp.get(i));
+        }
         //表存在则返回物理层最后一张子表的下标，并得到配置文件
         File config_file=IsLegal.isTable(dbName,tbName);
         String write_file_last_num = IsLegal.lastFileName(dbName, tbName);
@@ -26,7 +30,7 @@ public class DeleteDataFromTable {
         Boolean find = false;
         //非主键查询删除
         if(!IsLegal.isIndex(config_file,key)) {
-            for (int j = Integer.parseInt(write_file_last_num); j >= 0; j--) {
+            for (int j = Integer.parseInt(write_file_last_num); j >= 0; j--) {//字符串转整数
                 //设置变量traverse_file用来遍历表的所有文件
                 String last_num = "" + j;
                 //创建写入对象，创建sax解析器，document对象，获得root节点
@@ -53,7 +57,7 @@ public class DeleteDataFromTable {
             System.out.println("没有找到要删除的记录");
         }
     }
-
+    //主键删除用delete方法
     public static boolean delete(File file,String dbName,String tbName,String[] key_value,String last_num) throws DocumentException, IOException {
         SAXReader reader = new SAXReader();
         Document document = reader.read(file);
